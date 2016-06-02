@@ -25,5 +25,5 @@ python3 setup.py develop
 # run camproc (will continuously try to connect to verification):
 python3 -m skyrec.camproc tcp://192.168.x.y:29292
 # run verification (this will supply the binding address):
-python3 -m skyrec.verification tcp://0.0.0.0:29292 contrib/data.csv
+python3 -m skyrec.verification tcp://0.0.0.0:29292 contrib/data.csv --path /path/to/images/
 ```
