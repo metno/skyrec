@@ -3,15 +3,27 @@ Hackathon project for sky recognition using web camera input.
 
 ## Developing
 
-```
-sudo apt-get install python3 python3-dev python3-pip python-virtualenv
-virtualenv -p python3 deps
-source deps/bin/activate
-python setup.py develop
-```
+You need to install Docker according to https://docs.docker.com/engine/installation/.
 
-## Running the camera processing module
+To build the Docker container with OpenCV, run:
 
 ```
-python -m skyrec.camproc tcp://localhost:29292
+docker build --tag=opencv .
+```
+
+When the process completes, you may run the container:
+
+```
+docker run --interactive --tty --volume `pwd`:/skyrec opencv
+```
+
+A new shell appears. Your source code is available at `/skyrec`. To run the programs:
+
+```
+cd /skyrec
+python3 setup.py develop
+# run camproc:
+python3 -m skyrec.camproc tcp://192.168.x.y:29292
+# run verification:
+python3 -m skyrec.verification
 ```
