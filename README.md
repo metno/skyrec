@@ -9,3 +9,9 @@ virtualenv -p python3 deps
 source deps/bin/activate
 python setup.py develop
 ```
+
+## Running the camera processing module
+
+```
+python -m skyrec.camproc tcp://localhost:29292
+```
