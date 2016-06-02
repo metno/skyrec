@@ -1,4 +1,4 @@
-import skyrec.camproc
+import skyrec
 
 import logging
 import argparse
@@ -12,20 +12,21 @@ if __name__ == '__main__':
                         level=logging.DEBUG)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('source', type=str, help='ZeroMQ socket for communication')
+    parser.add_argument('addr', type=str, help='ZeroMQ socket for communication')
     args = parser.parse_args()
 
     logging.info('Starting camproc')
-    pipeline = skyrec.camproc.DataPipeline(args.source)
-    pipeline.setup()
-    logging.info('Now processing data from %s', pipeline.source)
+    pipeline = skyrec.DataRepPipeline(args.addr)
+    logging.info('Now processing data from %s', pipeline.addr)
 
     while True:
         logging.info('Waiting for request...')
-        request = pipeline.recv_request()
+        request = pipeline.recv()
         requests += 1
         logging.info('Received request %d, now processing...', requests)
-        response = skyrec.camproc.DataResponse()
+        logging.info('Request payload: %s', request.serialize())
+        response = skyrec.MessageOut('PONG')
         logging.info('Finished processing request %d, sending response...', requests)
-        pipeline.send_response(response)
+        logging.info('Response payload: %s', response.serialize())
+        pipeline.send(response)
         logging.info('Sent response to request %d', requests)
