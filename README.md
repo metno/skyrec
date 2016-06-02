@@ -22,8 +22,8 @@ A new shell appears. Your source code is available at `/skyrec`. To run the prog
 ```
 cd /skyrec
 python3 setup.py develop
-# run camproc:
+# run camproc (will continuously try to connect to verification):
 python3 -m skyrec.camproc tcp://192.168.x.y:29292
-# run verification:
-python3 -m skyrec.verification
+# run verification (this will supply the binding address):
+python3 -m skyrec.verification tcp://0.0.0.0:29292 contrib/data.csv --path /path/to/images/
 ```
