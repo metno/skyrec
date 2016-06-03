@@ -77,8 +77,11 @@ def cloud_area_fraction_to_octal(cloud_area_fraction):
 
 
 def cloud_area_fraction_to_symbol(cloud_area_fraction):
+   # Unknown
+   if cloud_area_fraction < 0:
+      return 0
    # Sun
-   if cloud_area_fraction < 0.13:
+   elif cloud_area_fraction < 0.13:
       return 1
    # Partly cloudy
    elif cloud_area_fraction < 0.38:
