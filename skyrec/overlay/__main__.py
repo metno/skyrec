@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     pipeline = skyrec.DataReqPipeline(args.addr)
 
-    data = Data({'path':  args.imgfile})
+    data = Data({'path':  args.input})
     logging.debug('Start processing %s', data.path)
     request = data.make_request_message()
     pipeline.send(request)
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     icon_filename = get_icon_filename(args.iconpath, symbol)
 
     # Create overlay image
-    background = Image.open(args.imgfile)
+    background = Image.open(args.input)
     overlay = Image.open(icon_filename)
 
     background = background.convert("RGBA")
