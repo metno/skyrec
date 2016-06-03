@@ -14,7 +14,7 @@ with open('contrib/data.csv', 'r') as csvfile:
 basedir = '/lustre/storeB/users/thomasn/webcams/cropped'
 
 txt_file = open('extracted_features.txt', 'w')
-txt_file.write('filename,msat,vsat,mbr,vbr,bf,gf,observed')
+txt_file.write("filename,msat,vsat,mbr,vbr,bf,gf,observed\n")
 
 html_file = open('raw_values.html', 'w')
 html_file.write("<html><body><table border = \"1\">")
