@@ -1,5 +1,7 @@
 import skyrec
+import skyrec.processing
 
+import io
 import base64
 import logging
 import argparse
@@ -29,14 +31,23 @@ if __name__ == '__main__':
         try:
             if 'image' not in request.data:
                 raise Exception('Missing image payload')
-            request.data['image'] = base64.b64decode(request.data['image'])
+            image_data = base64.b64decode(request.data['image'])
         except Exception as e:
             logging.warning('Invalid payload received, discarding.')
             pipeline.send(MessageOut({'error': str(e)}))
             continue
 
-        # FIXME: do processing and replace with sensible data
-        response = skyrec.MessageOut({'cloud_area_fraction': 0.0})
+        image_io = io.BytesIO(image_data)
+        image_io.seek(0)
+        image = skyrec.processing.Image(image_io)
+        image.process()
+
+        response = skyrec.MessageOut({
+            'raw': {
+                'saturation': image.saturation,
+            },
+            'cloud_area_fraction': 0.0,
+        })
 
         logging.info('Finished processing request %d, sending response...', requests)
         logging.info('Response payload: %s', response.serialize())

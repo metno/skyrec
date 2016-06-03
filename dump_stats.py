@@ -60,8 +60,10 @@ for image_name in os.listdir(basedir):
         except:
             oo = ''
 
-        image_path = (basedir + '/' + image_name)
-        im = Image(image_path)
+        image_path = os.path.join(basedir, image_name)
+        with open(image_path, 'rb') as image_buffer:
+            im = Image(image_buffer)
+        im.process()
 
         write_html_row(image_path, oo, im.saturation['mean'], im.saturation['var'], im.brightness['mean'], im.brightness['var'], im.blue_fraction, im.grey_fraction)
         write_txt_row(image_name, oo, im.saturation['mean'], im.saturation['var'], im.brightness['mean'], im.brightness['var'], im.blue_fraction, im.grey_fraction)
