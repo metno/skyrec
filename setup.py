@@ -6,7 +6,7 @@ except ImportError:
 setup(
     name = "Skyrec",
     version = "0.0.1",
-    packages = find_packages(),
+    packages = [],
     install_requires = [
         "pyzmq==15.2.0",
         "pandas==0.18.1",
