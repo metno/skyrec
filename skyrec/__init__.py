@@ -49,7 +49,7 @@ class DataReqPipeline(DataPipeline):
     def setup(self):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REQ)
-        self.socket.bind(self.addr)
+        self.socket.connect(self.addr)
 
 
 class DataRepPipeline(DataPipeline):
