@@ -50,3 +50,9 @@ class Image(object):
             'saturation': self.saturation,
             'brightness': self.brightness,
         }
+
+    def cloud_area_fraction(self):
+        if (self.brightness['mean'] < 0.4):
+            return -1.0
+
+        return 1.0 - self.blue_fraction
