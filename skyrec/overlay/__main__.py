@@ -1,14 +1,8 @@
 import argparse
-import dateutil.parser
 import logging
-import pandas
-import csv
 import os
-import sys
-import base64
-import math
-from PIL import Image
 
+from PIL import Image
 
 import skyrec
 
