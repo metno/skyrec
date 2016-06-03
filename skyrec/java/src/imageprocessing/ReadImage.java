@@ -6,17 +6,23 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+
 import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.awt.image.BufferedImage;
 
 public class ReadImage {
 	public static final String ImageFoldUrl = "file:///lustre/storeB/users/thomasn/webcams/cropped_resized/";
 	public static final String ObservationData = "file:///lustre/storeB/users/thomasn/webcams/data.csv";
+	public static final String FeatureData = "/disk1/git/skyrec/contrib/extracted_features.txt";
 	public static final String trainDataFile = "/disk1/git/skyrec/skyrec/java/src/imageprocessing/trainData.txt";
 	public static final String testDataFile = "/disk1/git/skyrec/skyrec/java/src/imageprocessing/testData.txt";
+	public static final String trainFeatureDataFile = "/disk1/git/skyrec/skyrec/java/src/imageprocessing/trainFeatureData.txt";
+	public static final String testFeatureDataFile = "/disk1/git/skyrec/skyrec/java/src/imageprocessing/testFeatureData.txt";
 	public static final boolean appendTrainData = true;
 	public static final double trainPercent=0.7;
 	
@@ -126,7 +132,80 @@ public class ReadImage {
 		//readRGBFromImage("file:///lustre/storeB/users/thomasn/webcams/cropped_resized/20160422_120002.jpg");
 
 		//listFiles("file:///lustre/storeB/users/thomasn/webcams/cropped_resized/");
-		createTrainDataSet();
+		//createTrainDataSet();
+		createFeatureTrainDataSet();
 		System.out.println("Done!");
+	}
+
+	private static void createFeatureTrainDataSet() {
+		URL dataUrl;
+		String dataSeparator=",";
+		try {
+			HashMap<String, String> featureData=getFeatureData();
+			dataUrl = new URL(ObservationData);
+			BufferedReader in = new BufferedReader(new InputStreamReader(dataUrl.openStream()));
+
+			String inputLine;
+			//skip the first line
+			in.readLine();
+			while ((inputLine = in.readLine()) != null) {
+				String[] values=inputLine.split(dataSeparator);
+				if (values.length!=6)
+					continue;
+				String imageName=values[0];
+				String weatherSymbol=values[4];
+				String dataRow=featureData.get(imageName);
+				String[] fv=dataRow.split(",");
+				dataRow="";
+				int i=1;
+				for (int j=0;j<fv.length;j++) {
+					dataRow+=" "+(i++)+":"+fv[j];
+				}
+				dataRow=weatherSymbol+" "+dataRow.substring(1);
+				if (Math.random()<=trainPercent) {
+					appendToFile(dataRow,trainFeatureDataFile);
+				} else {
+					appendToFile(dataRow,testFeatureDataFile);
+				}
+				System.out.println(imageName+":"+dataRow);
+			}
+			in.close();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static HashMap<String, String> getFeatureData() {
+		HashMap<String, String> data=new HashMap<String, String>();
+		String dataSeparator=",";
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(FeatureData));
+
+			String inputLine;
+			//skip the first line
+			in.readLine();
+			while ((inputLine = in.readLine()) != null) {
+				String[] values=inputLine.split(dataSeparator);
+				if (values.length!=8)
+					continue;
+				String imageName=values[0];
+				String featureValues=inputLine.substring(imageName.length()+1).replaceAll(" ", "");
+				featureValues=featureValues.substring(0, featureValues.length()-1);
+				data.put(imageName, featureValues);
+				//System.out.println(imageName+":"+featureValues);
+			}
+			in.close();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
 	}
 }
