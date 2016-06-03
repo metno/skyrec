@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
         response = skyrec.MessageOut({
             'raw': image.serialized(),
-            'cloud_area_fraction': 0.0,
+            'cloud_area_fraction': image.cloud_area_fraction(),
         })
 
         logging.info('Finished processing request %d, sending response...', requests)
