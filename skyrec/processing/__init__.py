@@ -36,3 +36,17 @@ class Image(object):
     def grey_measure(self):
         masked_image = cv2.bitwise_and(self.hsv[:, :, 2], self.grey_pixels)
         return masked_image.sum()
+
+    def serialized(self):
+        """!
+        @brief return a serialized representation of all data in this image object.
+        """
+        return {
+            'total_pixels': self.total_pixels,
+            'blue_pixels_count': self.blue_pixels_count,
+            'blue_fraction': self.blue_fraction,
+            'grey_pixels_count': self.grey_pixels_count,
+            'grey_fraction': self.grey_fraction,
+            'saturation': self.saturation,
+            'brightness': self.brightness,
+        }

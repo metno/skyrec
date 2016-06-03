@@ -43,9 +43,7 @@ if __name__ == '__main__':
         image.process()
 
         response = skyrec.MessageOut({
-            'raw': {
-                'saturation': image.saturation,
-            },
+            'raw': image.serialized(),
             'cloud_area_fraction': 0.0,
         })
 
