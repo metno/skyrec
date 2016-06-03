@@ -7,6 +7,7 @@ import java.util.*;
 class svm_predict {
 	private static boolean tolerant=true;
 	private static int tolerantValue=1;
+	private static int[][] matrix =new int[8][8];
 	private static svm_print_interface svm_print_null = new svm_print_interface()
 	{
 		public void print(String s) {}
@@ -103,6 +104,7 @@ class svm_predict {
 			} else if(v == target) {
 				++correct;
 			}
+			statistic((int)v,(int)target);
 			error += (v-target)*(v-target);
 			sumv += v;
 			sumy += target;
@@ -123,6 +125,10 @@ class svm_predict {
 		else
 			svm_predict.info("Accuracy = "+(double)correct/total*100+
 				 "% ("+correct+"/"+total+") (classification)\n");
+	}
+
+	private static void statistic(int v, int target) {
+		matrix[v-1][target-1]++;
 	}
 
 	private static void exit_with_help()
@@ -196,6 +202,18 @@ class svm_predict {
 		catch(ArrayIndexOutOfBoundsException e) 
 		{
 			exit_with_help();
+		}
+		
+		print(matrix);
+	}
+
+	private static void print(int[][] matrix) {
+		System.out.print("\r\nClassification matrix\r\n");
+		for (int i=0;i<matrix.length;i++) {
+			for (int j=0;j<matrix[i].length;j++) {
+				System.out.print(matrix[i][j]+" ");
+			}
+			System.out.println("\r\n");
 		}
 	}
 }
