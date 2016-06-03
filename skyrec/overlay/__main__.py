@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
        # Determine weather symbol
        cloud_area_fraction = response.data['cloud_area_fraction']
-       symbol = cloud_area_fraction_to_symbol(cloud_area_fraction)
+       symbol = skyrec.cloud_area_fraction_to_symbol(cloud_area_fraction)
        icon_filename = get_icon_filename(args.iconpath, symbol)
 
        # Create overlay image
