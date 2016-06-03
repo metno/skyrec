@@ -13,51 +13,6 @@ import Image
 import skyrec
 
 
-class Data(object):
-    def __init__(self, data):
-        [setattr(self, key, value) for key, value in data.items()]
-
-    def make_request_message(self):
-        with open(self.path, 'rb') as image:
-            data = {
-                'image': base64.b64encode(image.read()).decode('ascii')
-            }
-        message = skyrec.MessageOut(data)
-        return message
-
-
-def cloud_area_fraction_to_octal(cloud_area_fraction):
-    return math.floor((cloud_area_fraction / 100) * 8)
-
-
-def cloud_area_fraction_to_symbol(cloud_area_fraction):
-   # Sun
-   if cloud_area_fraction < 0.13:
-      return 1
-   # Partly cloudy
-   elif cloud_area_fraction < 0.38:
-      return 2
-   # Mostly cloudy
-   elif cloud_area_fraction < 0.86:
-      return 3
-   # Cloudy
-   else:
-      return 4
-
-
-def octal_to_symbol(octal):
-   cloud_area_fraction = octal_to_percent(octal) / 100
-   return cloud_area_fraction_to_symbol(cloud_area_fraction)
-
-
-def octal_to_percent(octal):
-    return (octal * 100) / 8
-
-
-def unserialize_datetime(dt):
-    return dateutil.parser.parse(dt)
-
-
 def get_icon_filename(path, symbol):
    return "%s/%d.png" % (path, symbol)
 
@@ -77,7 +32,7 @@ if __name__ == '__main__':
     pipeline = skyrec.DataReqPipeline(args.addr)
 
     for input_filename in args.inputs:
-       data = Data({'path':  input_filename})
+       data = skyrec.ImageRequestData({'path':  input_filename})
        logging.debug('Start processing %s', data.path)
        request = data.make_request_message()
        pipeline.send(request)
