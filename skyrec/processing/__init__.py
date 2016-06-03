@@ -10,6 +10,8 @@ class Image:
     UPPER_GREY = np.array([255, 51, 252], np.uint8)
 
     def __init__(self, image_path):
+        self.saturation = {}
+        self.brightness = {}
         self.image_path = image_path
         self.img = cv2.imread(image_path)
         self.total_pixels = self.img.size / self.img.ndim
@@ -20,8 +22,11 @@ class Image:
         self.grey_pixels = cv2.inRange(self.hsv, self.LOWER_GREY, self.UPPER_GREY)
         self.grey_pixels_count = cv2.countNonZero(self.grey_pixels)
         self.grey_fraction = self.grey_pixels_count / self.total_pixels
-        self.saturation = self.hsv[:, :, 1].ravel().mean() / 255
-        self.brightness = self.hsv[:, :, 2].ravel().mean() / 255
+        self.saturation['mean'] = self.hsv[:, :, 1].ravel().mean() / 255
+        self.saturation['var'] = self.hsv[:, :, 1].ravel().var()
+        self.brightness['mean'] = self.hsv[:, :, 2].ravel().mean() / 255
+        self.brightness['var'] = self.hsv[:, :, 2].ravel().var()
+
 
     def blue_measure(self):
         masked_image = cv2.bitwise_and(self.hsv[:, :, 2], self.blue_pixels)
