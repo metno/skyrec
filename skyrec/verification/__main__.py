@@ -21,7 +21,7 @@ if __name__ == '__main__':
                         level=logging.INFO)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('addr', type=str, help='ZeroMQ bind address')
+    parser.add_argument('addr', type=str, help='ZeroMQ address to connect to')
     parser.add_argument('csv', type=str, help='CSV file containing input data')
     parser.add_argument('--path', type=str, help='Path to prepend to source images', default='.', required=False)
     parser.add_argument('--verbose', type=bool, help='Print entire table of values after processing', default=False, required=False)

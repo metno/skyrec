@@ -49,7 +49,7 @@ class DataReqPipeline(DataPipeline):
     def setup(self):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REQ)
-        self.socket.bind(self.addr)
+        self.socket.connect(self.addr)
 
 
 class DataRepPipeline(DataPipeline):
@@ -73,12 +73,15 @@ class ImageRequestData(object):
 
 
 def cloud_area_fraction_to_octal(cloud_area_fraction):
-    return math.floor((cloud_area_fraction / 100) * 8)
+    return math.floor(cloud_area_fraction * 8)
 
 
 def cloud_area_fraction_to_symbol(cloud_area_fraction):
+   # Unknown
+   if cloud_area_fraction < 0:
+      return 0
    # Sun
-   if cloud_area_fraction < 0.13:
+   elif cloud_area_fraction < 0.13:
       return 1
    # Partly cloudy
    elif cloud_area_fraction < 0.38:
@@ -92,12 +95,16 @@ def cloud_area_fraction_to_symbol(cloud_area_fraction):
 
 
 def octal_to_symbol(octal):
-   cloud_area_fraction = octal_to_percent(octal) / 100
+   cloud_area_fraction = octal_to_fraction(octal)
    return cloud_area_fraction_to_symbol(cloud_area_fraction)
 
 
+def octal_to_fraction(octal):
+    return octal / 8
+
+
 def octal_to_percent(octal):
-    return (octal * 100) / 8
+    return octal_to_fraction(octal) * 100
 
 
 def unserialize_datetime(dt):
