@@ -72,7 +72,7 @@ class ImageRequestData(object):
         return message
 
 
-def cloud_area_fraction_to_octal(cloud_area_fraction):
+def cloud_area_fraction_to_okta(cloud_area_fraction):
     return math.floor(cloud_area_fraction * 8)
 
 
@@ -94,17 +94,17 @@ def cloud_area_fraction_to_symbol(cloud_area_fraction):
       return 4
 
 
-def octal_to_symbol(octal):
-   cloud_area_fraction = octal_to_fraction(octal)
+def okta_to_symbol(okta):
+   cloud_area_fraction = okta_to_fraction(okta)
    return cloud_area_fraction_to_symbol(cloud_area_fraction)
 
 
-def octal_to_fraction(octal):
-    return octal / 8
+def okta_to_fraction(okta):
+    return okta / 8
 
 
-def octal_to_percent(octal):
-    return octal_to_fraction(octal) * 100
+def okta_to_percent(okta):
+    return okta_to_fraction(okta) * 100
 
 
 def unserialize_datetime(dt):

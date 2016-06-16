@@ -44,7 +44,7 @@ if __name__ == '__main__':
         data = {
             'timestamp': dt,
             'hour': dt.hour,
-            'skyrec': skyrec.cloud_area_fraction_to_octal(response.data['cloud_area_fraction']),
+            'skyrec': skyrec.cloud_area_fraction_to_okta(response.data['cloud_area_fraction']),
             'arome': int(line['AROME']),
             'observed': int(line['observed']),
         }
@@ -64,10 +64,10 @@ if __name__ == '__main__':
 
     logging.info('Processed a total of %d images from %s to %s', len(index), frame['timestamp'][0], frame['timestamp'][-1])
 
-    logging.info('Mean error skyrec vs. AROME         : %.1f%%', skyrec.octal_to_percent(frame['distance_skyrec_arome'].mean()))
-    logging.info('Mean error skyrec vs. observation   : %.1f%%', skyrec.octal_to_percent(frame['distance_skyrec_observed'].mean()))
-    logging.info('Mean error AROME vs. observation    : %.1f%%', skyrec.octal_to_percent(frame['distance_arome_observed'].mean()))
+    logging.info('Mean error skyrec vs. AROME         : %.1f%%', skyrec.okta_to_percent(frame['distance_skyrec_arome'].mean()))
+    logging.info('Mean error skyrec vs. observation   : %.1f%%', skyrec.okta_to_percent(frame['distance_skyrec_observed'].mean()))
+    logging.info('Mean error AROME vs. observation    : %.1f%%', skyrec.okta_to_percent(frame['distance_arome_observed'].mean()))
 
-    logging.info('Median error skyrec vs. AROME       : %.1f%%', skyrec.octal_to_percent(frame['distance_skyrec_arome'].median()))
-    logging.info('Median error skyrec vs. observation : %.1f%%', skyrec.octal_to_percent(frame['distance_skyrec_observed'].median()))
-    logging.info('Median error AROME vs. observation  : %.1f%%', skyrec.octal_to_percent(frame['distance_arome_observed'].median()))
+    logging.info('Median error skyrec vs. AROME       : %.1f%%', skyrec.okta_to_percent(frame['distance_skyrec_arome'].median()))
+    logging.info('Median error skyrec vs. observation : %.1f%%', skyrec.okta_to_percent(frame['distance_skyrec_observed'].median()))
+    logging.info('Median error AROME vs. observation  : %.1f%%', skyrec.okta_to_percent(frame['distance_arome_observed'].median()))
