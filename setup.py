@@ -10,6 +10,6 @@ setup(
     install_requires = [
         "pyzmq==15.2.0",
         "pandas==0.18.1",
-        "Pillow==3.2.0",
+        "Pillow>=8.3.0",
     ]
 )
